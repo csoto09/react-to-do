@@ -1,53 +1,49 @@
-import React, { Component } from 'react';
+import React, { Component, useState } from 'react';
 import './App.css';
-import ToDo from './components/ToDo.js';
+import { ToDo } from './components/ToDo.js';
 
-class App extends Component {
-  constructor(props){
-    super(props);
-    this.state = {
-      todos: [
-       { description: 'Walk the cat', isCompleted: true},
-       { description: 'Throw the dishes away', isCompleted: false },
-       { description: 'Buy new dishes', isCompleted: false }
-      ],
-      newTodoDescription: ''
-    };
+const initialTodos = [
+  { description: 'Walk the cat', isCompleted: true},
+  { description: 'Throw the dishes away', isCompleted: false },
+  { description: 'Buy new dishes', isCompleted: false }
+]
+
+const App = () => {
+  const [todos, setTodos] = useState(initialTodos)
+  const [newTodoDescription, setNewTodoDescription] = useState('')
+
+  const handleChange = (e) => {
+    setNewTodoDescription(e.target.value)
   }
 
-  handleChange(e) {
-    this.setState({ newTodoDescription: e.target.value })
-  }
-
-  handleSubmit(e) {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    if(!this.state.newTodoDescription) { return }
-    const newTodo = { description: this.state.newTodoDescription, isCompleted:false};
-    this.setState({ todos: [...this.state.todos, newTodo],newTodoDescription: '' });  
+    if(!newTodoDescription) return
+    const newTodo = { description: newTodoDescription, isCompleted: false };
+    setNewTodoDescription('')
+    setTodos([...todos, newTodo])
   }
 
-  toggleComplete(index) {
-    const todos = this.state.todos.slice();
-    const todo = todos[index];
+  const toggleComplete = (idx) => {
+    const todosCopy = [...todos]
+    const todo = todosCopy[idx];
     todo.isCompleted = todo.isCompleted ? false : true;
-    this.setState({ todos: todos})
+    setTodos(todosCopy)
   }
-  
-  render() {
-    return (
-      <div className="App">
-        <ul>
-          { this.state.todos.map( (todo, index) => 
-            <ToDo key={ index } description={ todo.description } isCompleted={ todo.isCompleted } toggleComplete={ () => this.toggleComplete(index) } />  
+
+  return (
+    <div className="App">
+      <ul>
+        { todos.map( (todo, index) =>
+            <ToDo key={ index } description={ todo.description } isCompleted={ todo.isCompleted } toggleComplete={ () => toggleComplete(index) } />
           )}
         </ul>
-        <form onSubmit={ (e) => this.handleSubmit(e)}>
-          <input type="text" value={ this.state.newTodoDescription } onChange={ (e) => this.handleChange(e)}/>
+        <form onSubmit={(e) => handleSubmit(e)}>
+          <input type="text" value={ newTodoDescription } onChange={(e) => handleChange(e)}/>
           <input type="submit"/>
         </form>
       </div>
-    );
-  }
+    )
 }
 
 export default App;
