@@ -8,7 +8,7 @@
     "mem": "^8.1.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
-    "react-scripts": "^4.0.3",
+    "react-scripts": "^5.0.0-next.47",
     "set-value": "^4.0.1"
   },
   "scripts": {
@@ -22,5 +22,8 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "volta": {
+    "node": "16.11.1"
+  }
 }
